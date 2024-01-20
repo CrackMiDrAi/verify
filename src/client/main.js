@@ -4,6 +4,8 @@ import './style.css';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 
+import { CreateNewCaptcha } from './captcha';
+
 const termAddon = {
   fit: new FitAddon()
 };
@@ -40,3 +42,9 @@ term.onData(data => {
 
 window.addEventListener('resize', () => termAddon.fit.fit());
 termAddon.fit.fit();
+
+document.querySelector('#create-recaptcha').addEventListener('click', () => {
+  CreateNewCaptcha(document.querySelector('#recaptcha'))
+    .then(e => console.log(e))
+    .catch(e => console.error(e));
+});

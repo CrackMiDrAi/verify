@@ -26,3 +26,6 @@ dist-ssr
 # not gonna lock dep version lol
 package-lock.json
 pnpm-lock.yaml
+
+# ignore environment
+.env

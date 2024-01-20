@@ -11,5 +11,7 @@ html, body {
   position: relative;
   width: 100vw;
   height: 100vh;
+  padding: 0.4em;
   background-color: #000;
+  box-sizing: border-box;
 }

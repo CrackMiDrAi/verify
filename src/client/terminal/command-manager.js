@@ -56,6 +56,11 @@ export class TerminalCommandManager {
   run(command) {
     const name = command;
     return new PromiseModded((res, rej, stderr) => {
+      if (name == '') {
+        res('');
+        return;
+      }
+
       for (const command of this.commands) {
         if (command.name === name) {
           // TODO: Params parser

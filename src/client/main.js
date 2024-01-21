@@ -25,6 +25,18 @@ term.open(document.querySelector('#terminal'));
 // term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
 
 const termManager = new TerminalManager(term);
+termManager.commandManager.add({
+  name: 'captcha',
+  description: 'Create a Google reCAPTCHA v2 checkbox',
+  callback: (stderr) => new Promise((res, rej) => {
+    stderr('Please verify you are a human...');
+    CreateNewCaptcha()
+      .then(token => {
+        res('\r\nFinished, your token: ' + token + '\r\n');
+      })
+      .catch(e => rej(e));
+  })
+});
 
 window.addEventListener('resize', () => termAddon.fit.fit());
 termAddon.fit.fit();

@@ -4,6 +4,8 @@ html, body {
   height: 100vh;
   margin: 0;
   padding: 0;
+  color: #FFF;
+  background-color: #000;
   overflow: hidden;
 }
 
@@ -14,4 +16,36 @@ html, body {
   padding: 0.4em;
   background-color: #000;
   box-sizing: border-box;
+}
+
+.captcha-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-out;
+  z-index: 100;
+}
+.captcha-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.captcha-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.5s ease-out;
+  z-index: 101;
+}
+.captcha-container.show {
+  opacity: 1;
+  pointer-events: auto;
 }

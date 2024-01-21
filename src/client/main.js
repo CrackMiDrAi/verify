@@ -40,9 +40,3 @@ termManager.commandManager.add({
 
 window.addEventListener('resize', () => termAddon.fit.fit());
 termAddon.fit.fit();
-
-document.querySelector('#create-recaptcha').addEventListener('click', () => {
-  CreateNewCaptcha(document.querySelector('#recaptcha'))
-    .then(e => console.log(e))
-    .catch(e => console.error(e));
-});

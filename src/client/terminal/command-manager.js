@@ -21,7 +21,7 @@ export class TerminalCommandManager {
           resultTable.addRow(command.name, command.description);
         }
 
-        result += resultTable.toString() + '\r\n';
+        result += resultTable.toString().replace(/\n/g, '\r\n') + '\r\n';
       }
 
       res(result + '\r\n');

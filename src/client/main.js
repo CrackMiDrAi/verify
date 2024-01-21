@@ -6,6 +6,8 @@ import { FitAddon } from 'xterm-addon-fit';
 
 import { CreateNewCaptcha } from './captcha';
 
+import { TerminalManager } from './terminal/manger';
+
 const termAddon = {
   fit: new FitAddon()
 };
@@ -20,25 +22,9 @@ for (const name in termAddon) {
 }
 
 term.open(document.querySelector('#terminal'));
-term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
+// term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
 
-term.onData(data => {
-  switch (data) {
-    case '\u0003': // Ctrl+C
-      term.write('^C');
-      break;
-    case '\r': // Enter
-      term.writeln('');
-      break;
-    case '\u007F': // Backspace (DEL)
-      if (term._core.buffer.x > 0) {
-        term.write('\b \b');
-      }
-      break;
-    default:
-      term.write(data);
-  }
-});
+const termManager = new TerminalManager(term);
 
 window.addEventListener('resize', () => termAddon.fit.fit());
 termAddon.fit.fit();

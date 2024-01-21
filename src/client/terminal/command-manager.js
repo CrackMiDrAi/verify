@@ -1,4 +1,4 @@
-
+import AsciiTable from 'ascii-table';
 
 class PromiseModded extends Promise {
   constructor(executor) {
@@ -21,12 +21,32 @@ class PromiseModded extends Promise {
   }
 }
 
-const HelpCommandCallback = (stderr/*, { commandName }*/) => new Promise((res) => {
-  res('Hello im help message\r\n');
-});
-
 export class TerminalCommandManager {
   constructor() {
+    const HelpCommandCallback = (stderr/*, { commandName }*/) => new Promise((res) => {
+      let result = '';
+      const resultTable = new AsciiTable().removeBorder();
+
+      if (false) { // commandName != ''
+        
+      } else {
+        result += [
+          '',
+          'Welcome to use CrackMiDrAi Emulated Terminal',
+          'List of all avalilable commands:',
+          '', '',
+        ].join('\r\n');
+
+        for (const command of this.commands) {
+          resultTable.addRow(command.name, command.description);
+        }
+
+        result += resultTable.toString() + '\r\n';
+      }
+
+      res(result + '\r\n');
+    });
+
     this.commands = [ // NOTE: Is this too complicated?
       /* {
         name,

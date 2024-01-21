@@ -34,15 +34,18 @@ export class TerminalManager {
       this.commandHistoryIndex = this.commandHistory.length;
 
       this.commandManager
-        .run(this.currentCommand)
+        .run(
+          this.currentCommand,
+          stderr => term.write(stderr)
+        )
         .then(stdout => {
           term.write(stdout);
           term.write(linePrefix);
           this.allowInput = true;
         })
-        .onProgress(stderr => term.write(stderr))
         .catch(e => {
           // handle error here
+          console.error(e);
           this.allowInput = true;
         });
       

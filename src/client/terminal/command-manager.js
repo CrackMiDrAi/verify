@@ -1,25 +1,5 @@
 import AsciiTable from 'ascii-table';
 
-class PromiseModded extends Promise {
-  constructor(executor) {
-    super((resolve, reject) => {
-      return executor(resolve, reject, (progress) => {
-        for (const progressCallback of this.progressCallbacks) {
-          progressCallback(progress);
-        }
-      });
-    });
-
-    this.progressCallbacks = [];
-  }
-
-  onProgress(callback) {
-    if (typeof callback === 'function') this.progressCallbacks.push(callback)
-    else throw new Error('Callback must be a function');
-
-    return this;
-  }
-}
 
 export class TerminalCommandManager {
   constructor() {
@@ -73,9 +53,13 @@ export class TerminalCommandManager {
     ];
   }
 
-  run(command) {
+  add(commandInfo) {
+    return this.commands.push(commandInfo);
+  }
+
+  run(command, stderr) {
     const name = command;
-    return new PromiseModded((res, rej, stderr) => {
+    return new Promise((res, rej) => {
       if (name == '') {
         res('');
         return;

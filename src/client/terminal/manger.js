@@ -7,6 +7,9 @@ export class TerminalManager {
     this.allowInput = true;
     this.linePrefix = '$ ';
     this.currentCommand = '';
+    this.currentCommandCache = null;
+    this.commandHistory = [];
+    this.commandHistoryIndex = -1;
 
     // Regist other managers
     this.commandManager = new TerminalCommandManager();
@@ -27,6 +30,9 @@ export class TerminalManager {
       this.allowInput = false;
       term.write('\r\n');
 
+      if (this.currentCommand != '' && this.commandHistory.indexOf(this.currentCommand) <= -1) this.commandHistory.push(this.currentCommand);
+      this.commandHistoryIndex = this.commandHistory.length;
+
       this.commandManager
         .run(this.currentCommand)
         .then(stdout => {
@@ -42,6 +48,7 @@ export class TerminalManager {
       
       // NOTE: Do logical stuff before these three code below
       this.currentCommand = '';
+      this.currentCommandCache = null;
     }
 
     const HandleBackspace = () => {
@@ -66,8 +73,37 @@ export class TerminalManager {
       }
     }
 
+    const HandleCommandHistory = next => {
+      if (this.commandHistory.length <= 0) return;
+
+      this.commandHistoryIndex += (next ? 1 : -1);
+      if (this.commandHistoryIndex < 0) this.commandHistoryIndex = 0;
+
+      // Clear user input
+      term.write((new Array(term._core.buffer.x - linePrefix.length + 1)).join('\b'));
+      term.write((new Array(this.currentCommand.length + 1)).join('\u0020'));
+      term.write((new Array(this.currentCommand.length + 1)).join('\b'));
+
+      if (this.currentCommandCache === null) this.currentCommandCache = this.currentCommand;
+
+      if (this.commandHistoryIndex < this.commandHistory.length) {
+        this.currentCommand = this.commandHistory[this.commandHistoryIndex];
+      } else {
+        if (this.currentCommandCache) this.currentCommand = this.currentCommandCache;
+        else this.currentCommand = '';
+        this.commandHistoryIndex = this.commandHistory.length;
+      }
+
+      term.write(this.currentCommand);
+    }
+
     const HandleInput = () => {
-      if (data === '\u001b[A' || data === '\u001b[B') return; // Up & down arrow key
+      if (data === '\u001b[A') { // Up arrow key
+        return HandleCommandHistory(false);
+      }
+      if (data === '\u001b[B') { // Down arrow key
+        return HandleCommandHistory(true);
+      }
       if (data === '\u001b[D') { // Left arrow key
         if (term._core.buffer.x <= linePrefix.length) return;
       }

@@ -12,8 +12,8 @@ export class TerminalCommandManager {
       } else {
         result += [
           '',
-          'Welcome to use CrackMiDrAi Emulated Terminal',
-          'List of all avalilable commands:',
+          '  Welcome to CrackMiDrAi Emulated Terminal  ',
+          '      List of all avalilable commands:      ',
           '', '',
         ].join('\r\n');
 

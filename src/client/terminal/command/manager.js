@@ -24,6 +24,16 @@ export class TerminalCommandManager {
           }
         },
         callback: BuiltInCommands.HelpCommandCallback.bind(this),
+      },
+      {
+        name: 'clear',
+        description: 'Clear terminal.',
+        callback: BuiltInCommands.ClearCommandCallback.bind(this),
+      },
+      {
+        name: 'refresh',
+        description: 'Refresh the page.',
+        callback: BuiltInCommands.RefreshCommandCallback.bind(this),
       }
     ];
   }

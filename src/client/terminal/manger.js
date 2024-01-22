@@ -1,4 +1,4 @@
-import { TerminalCommandManager } from "./command-manager";
+import { TerminalCommandManager } from "./command/manager";
 
 export class TerminalManager {
   constructor(terminal) {

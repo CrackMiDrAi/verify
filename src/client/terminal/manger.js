@@ -57,7 +57,7 @@ export class TerminalManager {
       this.commandManager
         .run(
           this.currentCommand,
-          stderr => term.write(stderr)
+          term
         )
         .then(stdout => {
           term.write(stdout);

@@ -13,7 +13,7 @@ export class TerminalCommandManager {
             params // Yes you can do it again
           }
         },
-        callback: (stderr, ...params) => {} // Return a Promise here please. Resolve value will be used as stdout
+        callback: (terminal, ...params) => {} // Return a Promise here please. Resolve value will be used as stdout
       } */
       {
         name: 'help',
@@ -32,7 +32,7 @@ export class TerminalCommandManager {
     return this.commands.push(commandInfo);
   }
 
-  run(command, stderr) {
+  run(command, terminal) {
     const name = command;
     return new Promise((res, rej) => {
       if (name == '') {
@@ -43,7 +43,7 @@ export class TerminalCommandManager {
       for (const command of this.commands) {
         if (command.name === name) {
           // TODO: Params parser
-          return command.callback(stderr)
+          return command.callback(terminal)
             .then(stdout => res(stdout))
             .catch(e => rej(e));
         }

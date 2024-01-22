@@ -18,7 +18,28 @@ export class TerminalManager {
     this.terminal.onData(data => this.onUserInput(data));
 
     // Init terminal!
+    this.terminal.write(this.getMOTD() + '\r\n');
     this.terminal.write(this.linePrefix);
+  }
+
+  getMOTD() {
+    const result = [
+      '',
+      '  Welcome to CrackMiDrAi Emulated Terminal v0.0.0!  ',
+      '          Current time: ' + (new Date()).toLocaleString(),
+      '',
+      '* Found any bugs? Report it on https://github.com/CrackMiDrAi/verify/issues/new',
+      '',
+    ];
+
+    if (import.meta.env.VITE_TERMINAL_MOTD && import.meta.env.VITE_TERMINAL_MOTD != '') {
+      result.push(
+        import.meta.env.VITE_TERMINAL_MOTD.replace(/[\r\n]+/g, '\r\n'),
+        ''
+      );
+    }
+
+    return result.join('\r\n');
   }
 
   onUserInput(data) {

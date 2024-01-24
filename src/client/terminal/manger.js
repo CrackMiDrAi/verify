@@ -50,7 +50,7 @@ export class TerminalManager {
   onUserInput(data) {
     if (!this.allowInput) return;
     
-    const { linePrefix, terminal: term } = this;
+    const { terminal: term } = this;
 
     const HandleEnter = () => {
       this.allowInput = false;
@@ -69,20 +69,24 @@ export class TerminalManager {
         })
         .catch(e => {
           // handle error here
-          console.error(e);
-          term.writeln([
-            '',
-            '**************************** ERROR ****************************',
-            '   An error has just occured, if you believe that this is not',
-            ' your fault, please report it on GitHub.',
-            '',
-            '   Error message:',
-            e.toString(),
-            ''
-          ].join('\r\n'));
+          if (typeof e === 'string') {
+            term.writeln(e);
+          } else {
+            console.error(e);
+            term.writeln([
+              '',
+              '**************************** ERROR ****************************',
+              '   An error has just occured, if you believe that this is not',
+              ' your fault, please report it on GitHub.',
+              '',
+              '   Error message:',
+              e.toString(),
+              ''
+            ].join('\r\n'));
+          }
         })
         .finally(() => {
-          term.write(linePrefix);
+          term.write(this.linePrefix);
           this.allowInput = true;
         });
       
@@ -92,7 +96,7 @@ export class TerminalManager {
     }
 
     const HandleBackspace = () => {
-      const cursorPos = term._core.buffer.x - linePrefix.length;
+      const cursorPos = term._core.buffer.x - this.linePrefix.length;
       if (cursorPos <= 0) return;
 
       this.currentCommand = (
@@ -120,7 +124,7 @@ export class TerminalManager {
       if (this.commandHistoryIndex < 0) this.commandHistoryIndex = 0;
 
       // Clear user input
-      term.write((new Array(term._core.buffer.x - linePrefix.length + 1)).join('\b'));
+      term.write((new Array(term._core.buffer.x - this.linePrefix.length + 1)).join('\b'));
       term.write((new Array(this.currentCommand.length + 1)).join('\u0020'));
       term.write((new Array(this.currentCommand.length + 1)).join('\b'));
 
@@ -145,10 +149,10 @@ export class TerminalManager {
         return HandleCommandHistory(true);
       }
       if (data === '\u001b[D') { // Left arrow key
-        if (term._core.buffer.x <= linePrefix.length) return;
+        if (term._core.buffer.x <= this.linePrefix.length) return;
       }
       if (data === '\u001b[C') { // Right arrow key
-        if (term._core.buffer.x >= linePrefix.length + this.currentCommand.length) return;
+        if (term._core.buffer.x >= this.linePrefix.length + this.currentCommand.length) return;
       }
 
       if (data >= String.fromCharCode(0x20) && data <= String.fromCharCode(0x7E) || data >= '\u00a0') {
@@ -161,7 +165,7 @@ export class TerminalManager {
       case '\u0003': { // Ctrl+C
         // Honestly we cannot cancel a Promise in JavaScript
         term.write('^C');
-        term.write('\r\n' + linePrefix);
+        term.write('\r\n' + this.linePrefix);
         break;
       }
       case '\r': { // Enter

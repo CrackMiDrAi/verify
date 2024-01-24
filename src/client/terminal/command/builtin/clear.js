@@ -1,7 +1,7 @@
 
-export function ClearCommandCallback(term) {
+export function ClearCommandCallback(termmgr) {
   return new Promise(res => {
-    term.clear();
+    termmgr.terminal.clear();
     res('');
   });
 }

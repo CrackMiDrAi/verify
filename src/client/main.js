@@ -28,8 +28,8 @@ const termManager = new TerminalManager(term);
 termManager.commandManager.add({
   name: 'captcha',
   description: 'Create a Google reCAPTCHA v2 checkbox',
-  callback: (term) => new Promise((res, rej) => {
-    term.write('Please verify you are a human...');
+  callback: (termmgr) => new Promise((res, rej) => {
+    termmgr.terminal.write('Please verify you are a human...');
     CreateNewCaptcha()
       .then(token => {
         res('\r\nFinished, your token: ' + token + '\r\n');

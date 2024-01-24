@@ -62,16 +62,27 @@ export class TerminalManager {
       this.commandManager
         .run(
           this.currentCommand,
-          term
+          this
         )
         .then(stdout => {
           term.write(stdout);
-          term.write(linePrefix);
-          this.allowInput = true;
         })
         .catch(e => {
           // handle error here
           console.error(e);
+          term.writeln([
+            '',
+            '**************************** ERROR ****************************',
+            '   An error has just occured, if you believe that this is not',
+            ' your fault, please report it on GitHub.',
+            '',
+            '   Error message:',
+            e.toString(),
+            ''
+          ].join('\r\n'));
+        })
+        .finally(() => {
+          term.write(linePrefix);
           this.allowInput = true;
         });
       

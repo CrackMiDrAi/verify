@@ -42,7 +42,7 @@ export class TerminalCommandManager {
     return this.commands.push(commandInfo);
   }
 
-  run(command, terminal) {
+  run(command, termmgr) {
     const name = command;
     return new Promise((res, rej) => {
       if (name == '') {
@@ -53,7 +53,7 @@ export class TerminalCommandManager {
       for (const command of this.commands) {
         if (command.name === name) {
           // TODO: Params parser
-          return command.callback(terminal)
+          return command.callback(termmgr)
             .then(stdout => res(stdout))
             .catch(e => rej(e));
         }

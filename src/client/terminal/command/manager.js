@@ -88,6 +88,16 @@ export class TerminalCommandManager {
         name: 'refresh',
         description: 'Refresh the page.',
         callback: BuiltInCommands.RefreshCommandCallback.bind(this),
+      },
+      {
+        name: 'cd',
+        description: 'Change the working directory.',
+        callback: BuiltInCommands.CDCommandCallback.bind(this),
+      },
+      {
+        name: 'ls',
+        description: 'Show a list of files or directories.',
+        callback: BuiltInCommands.LSCommandCallback.bind(this),
       }
     ];
   }

@@ -139,7 +139,7 @@ export class TerminalFileManager {
   ls(path) {
     const dir = this.getClassByPath(path);
     if (!dir) {
-      throw new Error('Dir not exist');
+      throw 'Dir not exist';
     }
 
     return dir.files;

@@ -1,11 +1,11 @@
 import { TerminalCommandManager } from "./command/manager";
+import { TerminalFileManager } from "./file-manager";
 
 export class TerminalManager {
   constructor(terminal) {
     this.terminal = terminal;
 
     this.allowInput = true;
-    this.linePrefix = '$ ';
     this.currentCommand = '';
     this.currentCommandCache = null;
     this.commandHistory = [];
@@ -13,6 +13,7 @@ export class TerminalManager {
 
     // Regist other managers
     this.commandManager = new TerminalCommandManager();
+    this.fileManager = new TerminalFileManager();
 
     // Regist listeners for terminal
     this.terminal.onData(data => this.onUserInput(data));
@@ -20,6 +21,10 @@ export class TerminalManager {
     // Init terminal!
     this.terminal.write(this.getMOTD() + '\r\n');
     this.terminal.write(this.linePrefix);
+  }
+
+  get linePrefix() {
+    return `[root@linux ${this.fileManager.currentPathText}]# `;
   }
 
   getMOTD() {

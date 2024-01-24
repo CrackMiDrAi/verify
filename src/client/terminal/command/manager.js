@@ -1,5 +1,59 @@
 import * as BuiltInCommands from './builtin';
 
+const CommandParamNameReg = /^-{1,2}/;
+
+const getQuotePosition = (text, startPos = 0) => {
+  const single = text.indexOf('\'', startPos);
+  const double = text.indexOf('"', startPos);
+  if (double > -1) return double;
+  else if (single > -1) return single;
+  else return -1;
+}
+
+const buildCommandParam = commandArr => {
+  const getFullText = (param, startPos, paramArr) => {
+    const result = [ param ];
+
+    if (getQuotePosition(param) === -1) return result;
+    if (getQuotePosition(param) > 0) return result;
+    if (getQuotePosition(param) + 1 === param.length) return result;
+
+    for (let j = startPos + 1; j < paramArr.length; j++) {
+      const textNext = paramArr[j];
+      result.push(textNext)
+      if (getQuotePosition(textNext) + 1 === textNext.length) break;
+    }
+
+    return result;
+  }
+
+  let result = [];
+  const paramArr = [ ...commandArr ];
+
+  paramArr.shift();
+  if (paramArr.length === 0) return result;
+
+  for (let i = 0; i < paramArr.length; i++) {
+    const param = paramArr[i];
+
+    if (!param || param == '') continue;
+
+    if (CommandParamNameReg.test(param)) {
+      const paramValue = getFullText(paramArr[i + 1], i + 1, paramArr);
+      result.push({ name: param, value: paramValue.join(' ') });
+      i += paramValue.length;
+    } else {
+      const fullText = getFullText(param, i, paramArr);
+      result.push({ name: null, value: fullText.join(' ') });
+      i += fullText.length - 1;
+    }
+  }
+
+  return result;
+}
+
+
+
 export class TerminalCommandManager {
   constructor() {
     this.commands = [ // NOTE: Is this too complicated?
@@ -43,7 +97,10 @@ export class TerminalCommandManager {
   }
 
   run(command, termmgr) {
-    const name = command;
+    const commandArr = command.split(' ');
+    const paramArr = buildCommandParam(commandArr);
+    const name = commandArr[0];
+
     return new Promise((res, rej) => {
       if (name == '') {
         res('');
@@ -53,7 +110,7 @@ export class TerminalCommandManager {
       for (const command of this.commands) {
         if (command.name === name) {
           // TODO: Params parser
-          return command.callback(termmgr)
+          return command.callback(termmgr, ...paramArr)
             .then(stdout => res(stdout))
             .catch(e => rej(e));
         }

@@ -133,7 +133,7 @@ export class TerminalFileManager {
 
   cd (path) {
     this.currentPathClass = this.getClassByPath(path);
-    return this;
+    return this.currentPathClass;
   }
 
   ls(path) {

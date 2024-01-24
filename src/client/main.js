@@ -6,7 +6,7 @@ import { FitAddon } from 'xterm-addon-fit';
 
 import { CreateNewCaptcha } from './captcha';
 
-import { TerminalManager } from './terminal/manger';
+import { TerminalManager } from './terminal/manager';
 
 const termAddon = {
   fit: new FitAddon()

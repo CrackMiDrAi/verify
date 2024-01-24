@@ -103,6 +103,11 @@ export class TerminalFileManager {
     const pathArr = path.split('/');
     const startPos = pathArr[0] === '' ? 0 : pathArr[0] === '..' ? 1 : 2; // 0=root, 1=parent, 2=current
 
+    if (path === '/' || (path === '..' && !this.currentPathClass.parent)) {
+      this.currentPathClass = null;
+      return this;
+    }
+
     if (pathArr.length === 0) return this.currentPathClass || this;
     else if (pathArr.length === 1) {
       if (startPos === 1 && this.currentPathClass) return this.currentPathClass.parent;

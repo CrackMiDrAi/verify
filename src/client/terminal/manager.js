@@ -1,5 +1,6 @@
 import { TerminalCommandManager } from "./command/manager";
 import { TerminalFileManager } from "./file-manager";
+import { TerminalWebSocketManager } from "./websocket";
 
 export class TerminalManager {
   constructor(terminal) {
@@ -14,6 +15,7 @@ export class TerminalManager {
     // Regist other managers
     this.commandManager = new TerminalCommandManager();
     this.fileManager = new TerminalFileManager();
+    this.wsManager = new TerminalWebSocketManager(this);
 
     // Regist listeners for terminal
     this.terminal.onData(data => this.onUserInput(data));

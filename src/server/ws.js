@@ -5,11 +5,24 @@ const ws = express.Router();
 expressWs(ws);
 
 ws.ws('/', (ws, req) => {
-  ws.send('Connected');
+  const sendMsg = data => ws.send(JSON.stringify(data));
+  sendMsg({ type: 'ConnectMessage', msg: 'Connected' });
   
   ws.on('message', msg => {
-    console.log(msg);
-    ws.send(msg);
+    let data = null;
+
+    try {
+      data = JSON.parse(msg);
+    } catch (e) {
+      data = msg;
+    }
+
+    console.log(data);
+    sendMsg({
+      type: 'EchoMessage',
+      msg: 'ok',
+      data: data,
+    });
   });
 });
 

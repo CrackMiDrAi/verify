@@ -20,6 +20,7 @@ cd verify
 
 npm install # 你也可以使用自己喜欢的包管理器
 npm run dev
+npm run lint # 写完代码保存后、提交 Commit 前，请首先运行一遍以检查代码格式是否有问题
 ```
 
 ## 协议

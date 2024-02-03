@@ -7,9 +7,11 @@
   "scripts": {
     "dev": "nodemon src/server/main.js -w src/server",
     "start": "NODE_ENV=production node src/server/main.js",
+    "lint": "npx eslint --fix src/**/*.js",
     "build": "vite build"
   },
   "devDependencies": {
+    "eslint": "^8.56.0",
     "nodemon": "^3.0.1",
     "vite": "^5.0.2"
   },

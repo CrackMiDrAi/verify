@@ -1,3 +1,4 @@
+import { CreateNewCaptcha } from "../captcha";
 import { TerminalCommandManager } from "./command/manager";
 import { TerminalFileManager } from "./file-manager";
 import { TerminalWebSocketManager } from "./websocket";
@@ -23,6 +24,12 @@ export class TerminalManager {
     // Init terminal!
     this.terminal.write(this.getMOTD() + '\r\n');
     this.terminal.write(this.linePrefix);
+
+    this.commandManager.add({
+      name: 'start',
+      description: 'Start exam',
+      callback: StartExamCallback.bind(this),
+    });
   }
 
   get linePrefix() {
@@ -184,3 +191,21 @@ export class TerminalManager {
     }
   }
 }
+
+function StartExamCallback(termmgr, qqIdObj) {
+  return new Promise((res, rej) => {
+    if (!qqIdObj || isNaN(qqIdObj.value)) {
+      rej('Invaild QQ number!');
+      return;
+    }
+
+    termmgr.terminal.write('Please complete reCAPTCHA...');
+    CreateNewCaptcha()
+      .then(token => {
+        this.wsManager.connect(Math.round(parseInt(qqIdObj.value)), token)
+          .then(() => res('Successfully connected to the server\r\nHave fun!\r\n'))
+          .catch(e => rej(e));
+      })
+      .catch(e => rej(e));
+  })
+};

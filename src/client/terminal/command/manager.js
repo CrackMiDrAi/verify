@@ -8,7 +8,7 @@ const getQuotePosition = (text, startPos = 0) => {
   if (double > -1) return double;
   else if (single > -1) return single;
   else return -1;
-}
+};
 
 const buildCommandParam = commandArr => {
   const getFullText = (param, startPos, paramArr) => {
@@ -20,12 +20,12 @@ const buildCommandParam = commandArr => {
 
     for (let j = startPos + 1; j < paramArr.length; j++) {
       const textNext = paramArr[j];
-      result.push(textNext)
+      result.push(textNext);
       if (getQuotePosition(textNext) + 1 === textNext.length) break;
     }
 
     return result;
-  }
+  };
 
   let result = [];
   const paramArr = [ ...commandArr ];
@@ -36,7 +36,7 @@ const buildCommandParam = commandArr => {
   for (let i = 0; i < paramArr.length; i++) {
     const param = paramArr[i];
 
-    if (!param || param == '') continue;
+    if (!param || param === '') continue;
 
     if (CommandParamNameReg.test(param)) {
       const paramValue = getFullText(paramArr[i + 1], i + 1, paramArr);
@@ -50,7 +50,7 @@ const buildCommandParam = commandArr => {
   }
 
   return result;
-}
+};
 
 
 
@@ -112,7 +112,7 @@ export class TerminalCommandManager {
     const name = commandArr[0];
 
     return new Promise((res, rej) => {
-      if (name == '') {
+      if (name === '') {
         res('');
         return;
       }

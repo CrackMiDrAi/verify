@@ -117,11 +117,11 @@ export class TerminalFileManager {
 
     let result = (
       startPos === 1 ? this.currentPathClass.parent :
-      startPos === 2 && this.currentPathClass ? this.currentPathClass : this
+        startPos === 2 && this.currentPathClass ? this.currentPathClass : this
     );
 
     for (const pathSub of pathArr) {
-      if (pathSub === '' || pathSub == '..') continue;
+      if (pathSub === '' || pathSub === '..') continue;
       result = searchingFile(pathSub, result.files);
     }
 
@@ -168,4 +168,4 @@ const createFileClass = (fileJson, parent = null) => {
   }
 
   return fileClass;
-}
+};

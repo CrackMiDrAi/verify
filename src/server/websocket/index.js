@@ -1,11 +1,11 @@
-import express from "express";
+import express from 'express';
 import expressWs from 'express-ws';
 import { WebSocketMessageTypeHandler } from './message/index.js';
 
 const ws = express.Router();
 expressWs(ws);
 
-ws.ws('/', (ws, req) => {
+ws.ws('/', (ws) => {
   const sendMsg = data => ws.send(JSON.stringify(data));
   sendMsg({ type: 'ConnectMessage', data: { msg: 'Connected' }});
   

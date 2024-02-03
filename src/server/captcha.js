@@ -10,7 +10,7 @@ captcha
   .post('/', (req, res) => {
     const { captchaToken } = req.body;
 
-    if (!captchaToken || captchaToken == '') {
+    if (!captchaToken || captchaToken === '') {
       res.status(400).send({
         msg: 'No token provided',
       });

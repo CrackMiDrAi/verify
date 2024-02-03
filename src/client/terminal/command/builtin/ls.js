@@ -20,4 +20,4 @@ export function LSCommandCallback (termmgr, pathObj) {
 
     res(resultTable.toString().replace(/\n/g, '\r\n') + '\r\n');
   });
-};
+}

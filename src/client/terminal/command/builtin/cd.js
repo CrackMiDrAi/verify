@@ -4,4 +4,4 @@ export function CDCommandCallback (termmgr, { value: path }) {
     if (termmgr.fileManager.cd(path) !== null) res('');
     else rej(`${path}: no such path`);
   });
-};
+}

@@ -27,9 +27,9 @@ export function CreateNewCaptcha() {
       document.body.removeChild(captchaOverlay);
       document.body.removeChild(captchaContainer);
     }, 1000);
-  }
+  };
 
-  return new Promise(async (res, rej) => {
+  return new Promise((res, rej) => {
     const initCaptcha = () => grecaptcha.render(captchaContainer, {
       sitekey: import.meta.env.RECAPTCHA_SITEKEY,
       theme: 'dark',

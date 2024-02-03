@@ -79,7 +79,7 @@ export class TerminalWebSocketManager {
     this._isVerifyPassed = 0;
 
     console.log('[WS] Disconnected from server');
-    console.error(e)
+    console.error(e);
   }
 
   _onOpen() {

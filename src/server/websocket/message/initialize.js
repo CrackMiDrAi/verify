@@ -11,7 +11,7 @@ export function WebSocketInitialzeHandler(data, sendMsg) {
     .catch(e => {
       console.error(e);
       sendMsg({ type: 'InitializeMessage', data: { result: false, msg: 'Internal server error' }});
-    })
+    });
 }
 
 function verifyCaptcha(token) {

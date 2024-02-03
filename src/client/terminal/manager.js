@@ -1,7 +1,7 @@
-import { CreateNewCaptcha } from "../captcha";
-import { TerminalCommandManager } from "./command/manager";
-import { TerminalFileManager } from "./file-manager";
-import { TerminalWebSocketManager } from "./websocket";
+import { CreateNewCaptcha } from '../captcha';
+import { TerminalCommandManager } from './command/manager';
+import { TerminalFileManager } from './file-manager';
+import { TerminalWebSocketManager } from './websocket';
 
 export class TerminalManager {
   constructor(terminal) {
@@ -46,7 +46,7 @@ export class TerminalManager {
       '',
     ];
 
-    if (import.meta.env.VITE_TERMINAL_MOTD && import.meta.env.VITE_TERMINAL_MOTD != '') {
+    if (import.meta.env.VITE_TERMINAL_MOTD && import.meta.env.VITE_TERMINAL_MOTD !== '') {
       result.push(
         import.meta.env.VITE_TERMINAL_MOTD.replace(/[\r\n]+/g, '\r\n'),
         ''
@@ -65,7 +65,7 @@ export class TerminalManager {
       this.allowInput = false;
       term.write('\r\n');
 
-      if (this.currentCommand != '' && this.commandHistory.indexOf(this.currentCommand) <= -1) this.commandHistory.push(this.currentCommand);
+      if (this.currentCommand !== '' && this.commandHistory.indexOf(this.currentCommand) <= -1) this.commandHistory.push(this.currentCommand);
       this.commandHistoryIndex = this.commandHistory.length;
 
       this.commandManager
@@ -102,7 +102,7 @@ export class TerminalManager {
       // NOTE: Do logical stuff before these three code below
       this.currentCommand = '';
       this.currentCommandCache = null;
-    }
+    };
 
     const HandleBackspace = () => {
       const cursorPos = term._core.buffer.x - this.linePrefix.length;
@@ -124,7 +124,7 @@ export class TerminalManager {
 
         term.write(bsCommand);
       }
-    }
+    };
 
     const HandleCommandHistory = next => {
       if (this.commandHistory.length <= 0) return;
@@ -148,7 +148,7 @@ export class TerminalManager {
       }
 
       term.write(this.currentCommand);
-    }
+    };
 
     const HandleInput = () => {
       if (data === '\u001b[A') { // Up arrow key
@@ -168,26 +168,26 @@ export class TerminalManager {
         this.currentCommand += data;
       }
       term.write(data);
-    }
+    };
 
     switch (data) {
-      case '\u0003': { // Ctrl+C
-        // Honestly we cannot cancel a Promise in JavaScript
-        term.write('^C');
-        term.write('\r\n' + this.linePrefix);
-        break;
-      }
-      case '\r': { // Enter
-        HandleEnter();
-        break;
-      }
-      case '\u007F': { // Backspace (DEL)
-        HandleBackspace();
-        break;
-      }
-      default: {
-        HandleInput();
-      }
+    case '\u0003': { // Ctrl+C
+      // Honestly we cannot cancel a Promise in JavaScript
+      term.write('^C');
+      term.write('\r\n' + this.linePrefix);
+      break;
+    }
+    case '\r': { // Enter
+      HandleEnter();
+      break;
+    }
+    case '\u007F': { // Backspace (DEL)
+      HandleBackspace();
+      break;
+    }
+    default: {
+      HandleInput();
+    }
     }
   }
 }
@@ -207,5 +207,5 @@ function StartExamCallback(termmgr, qqIdObj) {
           .catch(e => rej(e));
       })
       .catch(e => rej(e));
-  })
-};
+  });
+}

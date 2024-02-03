@@ -2,7 +2,7 @@ import express, { Router } from "express";
 import expressWs from 'express-ws';
 import ViteExpress from "vite-express";
 
-import { RouterWebsocket } from "./ws.js";
+import { RouterWebsocket } from "./websocket/index.js";
 import { RouterCaptcha } from "./captcha.js";
 
 import dotenv from 'dotenv';
